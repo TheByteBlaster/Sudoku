@@ -147,7 +147,7 @@ main {
     flex-direction: column;
     justify-content: center;
     place-items: center;
-    gap: 16px;
+    gap: 1rem;
     position: absolute;
     transform: translateX(60px);
 }
@@ -156,13 +156,13 @@ main {
     grid-area: a;
     display: grid;
     grid-template-columns: repeat(9, auto);
-    gap: 4px;
+    gap: 0.25rem;
 }
 
 .sudoku-cell {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 4rem;
+    height: 4rem;
     background-color: var(--bg-sudoku-cell);
     border-radius: var(--border-radius-sudoku-cell);
     display: flex;
@@ -233,8 +233,8 @@ main {
     display: flex;
     place-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 4rem;
+    height: 4rem;
     background-color: var(--bg-sudoku-cell);
     border-radius: var(--border-radius-sudoku-cell);
     color: var(--text-sudoku-cell-color);
@@ -336,21 +336,4 @@ main {
         color: #111111;
     }
 
-}
-
-@media (max-width: 1000px) or (max-height: 900px) {
-    
-    .sudoku-cell {
-        height: 40px;
-        width: 40px;
-    }
-
-    #sudoku-options > * {
-        width: 40px;
-        height: 40px;
-    }
-
-    .sudoku-container {
-        transform: translateX(30px);
-    }
 }
