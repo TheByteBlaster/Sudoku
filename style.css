@@ -21,6 +21,10 @@
     --text-sudoku-cell-color-dark: #8F8F8F;
     --text-sudoku-cell-color-light: #666646;
 
+    --text-sudoku-info-color: var(--text-sudoku-info-color-dark);
+    --text-sudoku-info-color-dark: #9F9F9F;
+    --text-sudoku-info-color-light: #464626;
+
     --bg-nav: var(--bg-nav-dark);
     --bg-nav-dark: #1F1F1F;
     --bg-nav-light: #F0F0F0;
@@ -207,9 +211,7 @@ main {
     display: flex;
     align-items: center;
     width: 100%;
-    background-color: transparent;
-    border-radius: var(--border-radius-sudoku-cell);
-    color: var(--text-sudoku-cell-color);
+    color: var(--text-sudoku-info-color);
     font-weight: 900;
     font-size: 1.2rem;
     gap: 8px;

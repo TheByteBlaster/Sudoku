@@ -65,12 +65,14 @@ function renderPage() {
         document.querySelector(':root').style.setProperty('--bg-sudoku-cell',               'var(--bg-sudoku-cell-dark)');
         document.querySelector(':root').style.setProperty('--sudoku-cell-active-fill',      'var(--sudoku-cell-active-fill-dark)');
         document.querySelector(':root').style.setProperty('--text-sudoku-cell-color',       'var(--text-sudoku-cell-color-dark)');
+        document.querySelector(':root').style.setProperty('--text-sudoku-info-color',       'var(--text-sudoku-info-color-dark)');
         document.querySelector(':root').style.setProperty('--sodoku-cell-disabled-fill',    'var(--sodoku-cell-disabled-fill-dark)');
     } else {
         document.querySelector(':root').style.setProperty('--bg-body',                      'var(--bg-body-light)');
         document.querySelector(':root').style.setProperty('--bg-sudoku-cell',               'var(--bg-sudoku-cell-light)');
         document.querySelector(':root').style.setProperty('--sudoku-cell-active-fill',      'var(--sudoku-cell-active-fill-light)');
-        document.querySelector(':root').style.setProperty('--text-sudoku-cell-color',       'var(--text-sudoku-cell-light)');
+        document.querySelector(':root').style.setProperty('--text-sudoku-cell-color',       'var(--text-sudoku-cell-color-light)');
+        document.querySelector(':root').style.setProperty('--text-sudoku-info-color',       'var(--text-sudoku-info-color-light)');
         document.querySelector(':root').style.setProperty('--sodoku-cell-disabled-fill',    'var(--sodoku-cell-disabled-fill-light)');
     }
 
