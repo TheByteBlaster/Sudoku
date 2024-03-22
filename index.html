@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <link rel="shortcut icon" href="./Static/images/R-icon-black-bg-sharp.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <!-- Box Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div>
+                SUDOKU
+                <span style="color: #8FAE4D; font-size: 3rem; font-family: 'Times New Roman', Times, serif;">.</span>
+            </div>
+            <div class="toggle-theme light" id="toggle-theme">
+                <i class='bx bxs-sun'></i>
+                <i class='bx bxs-moon'></i>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="sudoku-container">
+            <div id="sudoku-field"></div>
+            <div id="sudoku-options">
+                <div id="button-hint">
+                    <i class='bx bxs-bulb'></i>
+                    <span id="hints">3</span>
+                </div>
+                <div id="button-restart">
+                    <i class='bx bxs-exit restart'></i>
+                </div>
+            </div>
+            <div id="sudoku-info">
+                <i class='bx bxs-heart'></i>
+                <span id="healthpoints">3</span>
+                <i class='bx bxs-time'></i>
+                <span id="time-elapsed">00:00</span>
+                <i class='bx bxs-laugh easy' id="icon"></i>
+                <span id="difficulty">Easy</span>
+            </div>
+        </div>
+    </main>
+    <script src="./Static/js/constant.js"></script>
+    <script src="./Static/js/game-manager.js"></script>
+    <script src="./Static/js/sudoku.js"></script>
+    <script src="./Static/js/app.js"></script>
+</body>
+</html>

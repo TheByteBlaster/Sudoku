@@ -1,0 +1,354 @@
+:root {
+    --bg-body: var(--bg-body-dark);
+    --bg-body-dark: #111111;
+    --bg-body-light: #FAFAFA;
+
+    --sudoku-cell-size: 60px;
+
+    --bg-sudoku-cell: var(--bg-sudoku-cell-dark);
+    --bg-sudoku-cell-dark: #1F1F1F;
+    --bg-sudoku-cell-light: #EAEAEA;
+
+    --bg-sudoku-cell-hover: var(--bg-sudoku-cell-hover-dark);
+    --bg-sudoku-cell-hover-dark: #3F3F3A;
+    --bg-sudoku-cell-hover-light: #D0DAD2;
+
+    --sudoku-cell-active-fill: var(--sudoku-cell-active-fill-dark);
+    --sudoku-cell-active-fill-dark: rgba(255, 255, 255, 0.1);
+    --sudoku-cell-active-fill-light: rgba(0, 0, 0, 0.15);
+
+    --text-sudoku-cell-color: var(--text-sudoku-cell-color-dark);
+    --text-sudoku-cell-color-dark: #8F8F8F;
+    --text-sudoku-cell-color-light: #666646;
+
+    --bg-nav: var(--bg-nav-dark);
+    --bg-nav-dark: #1F1F1F;
+    --bg-nav-light: #F0F0F0;
+
+    --text-nav: var(--text-nav-dark);
+    --text-nav-dark: #8F8F7F;
+    --text-nav-light: #666646;
+
+    --sodoku-cell-disabled-fill: var(--sodoku-cell-disabled-fill-dark);
+    --sodoku-cell-disabled-fill-dark: repeating-linear-gradient(
+        -45deg,
+        #1F1F1F,
+        #1F1F1F 10px,
+        #2F2F2F 10px,
+        #2F2F2F 20px
+    );
+    --sodoku-cell-disabled-fill-light: repeating-linear-gradient(
+        -45deg,
+        #F0F0F0,
+        #F0F0F0 10px,
+        #E5E5E5 10px,
+        #E5E5E5 20px
+    );
+
+    --border-radius-sudoku-cell: 8px;
+    --sodoku-cell-border: #565254;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-body);
+    height: 100vh;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+/* ------------------------------ */
+/*         NAVIGATION             */
+/* ------------------------------ */
+
+nav {
+    font-family: 'Bebas Neue', cursive;
+    background-color: var(--bg-nav);
+    color: #FFF;
+    font-size: 2rem;
+    width: 100%;
+}
+
+.nav-container {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    max-width: 1000px;
+}
+
+.toggle-theme {
+    font-size: 1.5rem;
+    color: var(--nav-text-color);
+    cursor: pointer;
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--border-radius-sudoku-cell);
+}
+
+.toggle-theme.dark:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.toggle-theme:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bxs-moon {
+    display: none;
+}
+
+.bxs-sun {
+    display: inline-block;
+}
+
+.dark .bxs-moon {
+    display: inline-block;
+}
+
+/* ------------------------------  */
+/*         SUDOKU GAME             */
+/* ------------------------------  */
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 105px);
+    width: 100vw;
+    min-height: 550px;
+}
+
+.dark .bxs-sun {
+    display: none;
+}
+
+.incorrect, .incorrect > .sudoku-cell-answer {
+    animation: error 150ms 2 ease-in;
+}
+
+.sudoku-container {
+    display: grid;
+    grid-template-areas: 
+        "a a b"
+        "a a b"
+        "c c b"
+    ;
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    gap: 16px;
+    position: absolute;
+    transform: translateX(60px);
+}
+
+#sudoku-field {
+    grid-area: a;
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    gap: 4px;
+}
+
+.sudoku-cell {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: var(--bg-sudoku-cell);
+    border-radius: var(--border-radius-sudoku-cell);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: 900;
+    font-size: 1.2rem;
+    outline: 1px solid transparent;
+    transition: outline 1s ease-in-out;
+}
+
+.sudoku-cell.active:hover {
+    background-color: var(--sudoku-cell-active-fill);
+    outline: 1px solid var(--sodoku-cell-border);
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.sudoku-cell.disabled {
+    background: var(--sodoku-cell-disabled-fill);
+}
+
+.sudoku-cell-answer {
+    user-select: none;
+    color: var(--text-sudoku-cell-color);
+    cursor: default;
+}
+
+/* ----------------------------------- */
+/*         GAME INFORMATION            */
+/* ----------------------------------- */
+
+#hints {
+    position: absolute;
+    transform: translate(120%, 35%);
+    border-radius: 100px;
+    font-size: small;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sudoku-info {
+    grid-area: c;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+    border-radius: var(--border-radius-sudoku-cell);
+    color: var(--text-sudoku-cell-color);
+    font-weight: 900;
+    font-size: 1.2rem;
+    gap: 8px;
+}
+
+#sudoku-info *:nth-child(even) {
+    margin-right: 24px;
+}
+
+#sudoku-options {
+    grid-area: b;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 4px;
+}
+
+#sudoku-options > * {
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--bg-sudoku-cell);
+    border-radius: var(--border-radius-sudoku-cell);
+    color: var(--text-sudoku-cell-color);
+    font-size: 1.1rem;
+}
+
+#sudoku-options > *:hover {
+    cursor: pointer;
+    box-shadow: inset 0 0 100px 100px var(--sudoku-cell-active-fill);
+}
+
+/* ----------------------------------- */
+/*         HINT ANIMATIONS             */
+/* ----------------------------------- */
+
+.sudoku-cell.hint {
+    animation: hint-background 1000ms 1 cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.hint, .hint > .sudoku-cell-answer {
+    animation: hint-text-color 600ms 1 linear;
+}
+
+.sudoku-cell.hint::after {
+    position: absolute;
+    content: '';
+    background-color: rgb(239, 200, 117);
+    height: 100%;
+    animation: hint-swipe 500ms 1 cubic-bezier(0.23, 1, 0.320, 1);
+    animation-delay: 200ms;
+}
+
+/* #button-hint {
+    width: 100px;
+    height: 60px;
+    background-color: var(--bg-sudoku-cell);
+    color: var(--text-sudoku-cell-color);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius-sudoku-cell);
+} */
+
+/* ------------------------------ */
+/*         ANIMATIONS             */
+/* ------------------------------ */
+
+@keyframes error {
+    
+    0% {
+        background-color: #fb6060;
+        box-shadow: 0px 0px 5px #fb6060;
+        transform: rotate(0deg);
+        color: #111111;
+    }
+    25% {
+        background-color: #fb6060;
+        transform: rotate(-5deg);
+        color: #111111;
+    }
+    75% {
+        background-color: #fb6060;
+        transform: rotate(5deg);
+        color: #111111;
+    }
+    100% {
+        background-color: #fb6060;
+        transform: rotate(0deg);
+        color: #111111;
+    }
+
+}
+
+@keyframes hint-background {
+    
+    0% {
+        background-color: var(--bg-sudoku-cell);
+        color: #111111;
+    }
+    50% {
+        background-color: rgb(234, 186, 83);
+        box-shadow: 0px 0px 5px rgb(234, 186, 83);
+        color: #111111;
+    }
+    100% {
+        background-color: var(--bg-sudoku-cell);
+        color: #111111;
+    }
+
+}
+
+@keyframes hint-text-color {
+    
+    0% {
+        color: #111111;
+    }
+    100% {
+        color: #111111;
+    }
+
+}
+
+@media (max-width: 1000px) or (max-height: 900px) {
+    
+    .sudoku-cell {
+        height: 40px;
+        width: 40px;
+    }
+
+    #sudoku-options > * {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sudoku-container {
+        transform: translateX(30px);
+    }
+}
