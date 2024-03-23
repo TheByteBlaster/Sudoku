@@ -179,7 +179,7 @@ main {
     background-color: var(--sudoku-cell-active-fill);
     outline: 1px solid var(--sodoku-cell-border);
     cursor: pointer;
-    transition: all 200ms ease-in-out;
+    transition: all 100ms ease-in-out;
 }
 
 .sudoku-cell.disabled {
