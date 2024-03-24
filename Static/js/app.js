@@ -35,6 +35,18 @@ document.querySelector('#button-restart').addEventListener('click', (e) => {
 
 })
 
+document.querySelector('#button-final').addEventListener('click', (e) => {
+    
+    gameManagerInstance.setInputModeFinal()
+
+})
+
+document.querySelector('#button-note').addEventListener('click', (e) => {
+    
+    gameManagerInstance.setInputModeNote()
+
+})
+
 window.onload = () => {
     document.querySelector('body').onkeydown = (e) => {
 
@@ -44,12 +56,16 @@ window.onload = () => {
         
         if (e.key === 'Backspace') 
         {
-            gameManagerInstance.clearSudokuCell();
+            gameManagerInstance.clearSudokuCellNotes();
             return;
         }
         else
         {
-            gameManagerInstance.answerCell(parseInt(e.key))
+            if (gameManagerInstance.getInputMode() === INPUT_MODE.Final) {
+                gameManagerInstance.answerCell(parseInt(e.key))
+            } else {
+                gameManagerInstance.noteCell(parseInt(e.key))
+            }
         }
 
         // localStorage.setItem('grid', JSON.stringify(grid));

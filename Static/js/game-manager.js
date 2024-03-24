@@ -35,6 +35,7 @@ class GameManager {
         this.setHealthPoints();
         this.setHints();
         this.renderTimer();
+        this.setInputModeFinal();
 
         setInterval(
             this.incrementTimer.bind(this),
@@ -261,6 +262,9 @@ class GameManager {
             for (let x = 0; x < 9; x++) {
                 let currentCellIndex = y * 9 + x;
                 cells[currentCellIndex].querySelector('.sudoku-cell-answer').innerHTML = this.gameState.Grid[y][x].givenValue;
+                cells[currentCellIndex].querySelector('.sudoku-cell-note').innerHTML = this.gameState.Grid[y][x].notes.map(note =>
+                    `<div>${note}</div>`
+                ).join('')
             }
         }
 
@@ -273,6 +277,9 @@ class GameManager {
         let currentCellIndex = this.currentPos.row * 9 + this.currentPos.col;
 
         cells[currentCellIndex].querySelector('.sudoku-cell-answer').innerHTML = this.gameState.Grid[this.currentPos.row][this.currentPos.col].givenValue;
+        cells[currentCellIndex].querySelector('.sudoku-cell-note').innerHTML = this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.map(note =>
+            `<div>${note}</div>`
+        ).join('')
     }
 
     resetDifficulty() {
@@ -304,6 +311,24 @@ class GameManager {
 
     setHints() {
         document.getElementById('hints').innerHTML = this.gameState.Hints
+    }
+
+    setInputModeFinal() {
+        this.gameState.InputMode = INPUT_MODE.Final;
+        document.getElementById('button-final').classList.add("button-active")
+        document.getElementById('button-note').classList.remove("button-active")
+        this.saveState();
+    }
+
+    setInputModeNote() {
+        this.gameState.InputMode = INPUT_MODE.note;
+        document.getElementById('button-note').classList.add("button-active")
+        document.getElementById('button-final').classList.remove("button-active")
+        this.saveState();
+    }
+
+    getInputMode() {
+        return this.gameState.InputMode;
     }
 
     resetTime() {
@@ -373,11 +398,15 @@ class GameManager {
                 answerElement.className = "sudoku-cell-answer";
                 answerElement.innerHTML = this.gameState.Grid[row][col].enabled ? null : this.gameState.Grid[row][col].correctValue;
 
+                let noteElement = document.createElement('div');
+                noteElement.className = "sudoku-cell-note";
+
                 if (!this.gameState.Grid[row][col].enabled) {
                     cellElement.classList.add('disabled')
                 }
                 
                 cellElement.appendChild(answerElement);
+                cellElement.appendChild(noteElement);
                 cellElement.addEventListener('mouseover', (e) => {
                     
                     if (!this.gameState.Grid[row][col].enabled || this.gameState.Grid[row][col].givenValue) return;
@@ -390,14 +419,14 @@ class GameManager {
                     
                 })
 
-                // cellElement.addEventListener('mouseleave', (e) => {
+                cellElement.addEventListener('mouseleave', (e) => {
 
-                //     document.querySelector('.active')?.classList.remove('active');
+                    document.querySelector('.active')?.classList.remove('active');
                     
-                //     this.currentPos.row = -1;
-                //     this.currentPos.col = -1;
+                    this.currentPos.row = -1;
+                    this.currentPos.col = -1;
                     
-                // })
+                })
     
                 if (row === 2 || row === 5) cellElement.style.marginBottom = '10px'
                 if (col === 2 || col === 5) cellElement.style.marginRight = '10px'
@@ -408,16 +437,22 @@ class GameManager {
         }
     }
 
-    clearSudokuCell() {
-
-        const cells = document.querySelectorAll('.sudoku-cell');
-        const currentCellIndex = this.currentPos.row * 9 + this.currentPos.col;
-
-        cells[currentCellIndex].querySelectorAll('.sudoku-cell-hint');
-
+    clearSudokuCellNotes() {
+        if (this.currentPos.col >= 0 && this.currentPos.row >= 0) {
+            this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes = []
+        }
+        // const cells = document.querySelectorAll('.sudoku-cell');
+        // const currentCellIndex = this.currentPos.row * 9 + this.currentPos.col;
+        // console.log(currentCellIndex);
+        // if (currentCellIndex >= 0) {
+        //     cells[currentCellIndex].querySelectorAll('.sudoku-cell-hint');
+        // }
+        this.renderCell()
     }
 
     answerCell(number) {
+
+        this.clearSudokuCellNotes()
 
         const answers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         const positions = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -441,6 +476,34 @@ class GameManager {
 
         this.saveState()
         this.renderCell()
+    }
+
+    noteCell(number) {
+
+        const answers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        if (this.isAlive() && answers.includes(number)) {
+
+            if (this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.includes(number)) {
+                this.removeNote(number);
+            } else if (this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.length < 9) {
+                this.addNote(number);
+            }
+            
+            this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.sort()
+            
+        }
+
+        this.renderCell()
+    }
+
+    addNote(number) {
+        this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.push(number)
+    }
+
+    removeNote(number) {
+        let index = this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.indexOf(number)
+        this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes.splice(index, 1)
     }
 
     useHint() {
