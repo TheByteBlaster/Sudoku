@@ -283,7 +283,7 @@ class GameManager {
     }
 
     resetDifficulty() {
-        this.gameState.Difficulty = DIFFICULTIES.Insane;
+        this.gameState.Difficulty = DIFFICULTIES.Easy;
         this.setDifficulty();
         this.saveState();
     }

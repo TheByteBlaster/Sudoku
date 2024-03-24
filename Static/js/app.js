@@ -59,6 +59,13 @@ window.onload = () => {
             gameManagerInstance.clearSudokuCellNotes();
             return;
         }
+        else if (e.key === ' ') {
+            if (gameManagerInstance.getInputMode() === INPUT_MODE.Final) {
+                gameManagerInstance.setInputModeNote()
+            } else {
+                gameManagerInstance.setInputModeFinal()
+            }
+        }
         else
         {
             if (gameManagerInstance.getInputMode() === INPUT_MODE.Final) {
