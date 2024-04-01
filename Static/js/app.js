@@ -3,6 +3,10 @@ THEME = {
     LIGHT: 'light'
 }
 
+if (localStorage.getItem('difficulty') === null) {
+    localStorage.setItem('difficulty', DIFFICULTIES.Easy);
+};
+
 if (localStorage.getItem('theme') === null) {
     localStorage.setItem('theme', THEME.DARK);
 };
@@ -31,9 +35,38 @@ document.querySelector('#button-hint').addEventListener('click', (e) => {
 
 document.querySelector('#button-restart').addEventListener('click', (e) => {
     
-    gameManagerInstance.newGame()
+    document.getElementById('menu').classList.remove("up")
+    document.getElementById('game').classList.add("down")
 
 })
+
+document.querySelector('#button-menu-play').addEventListener('click', (e) => {
+    
+    document.getElementById('menu').classList.add("up")
+    document.getElementById('game').classList.remove("down")
+    gameManagerInstance.newGame(gameManagerInstance.getDifficulty())
+
+})
+
+document.querySelector('#button-menu-continue').addEventListener('click', (e) => {
+    
+    document.getElementById('menu').classList.add("up")
+    document.getElementById('game').classList.remove("down")
+
+    document.querySelectorAll('#button-diff').forEach(button => {
+        button.classList.remove("button-active")
+        if (button.dataset.difficulty === gameManagerInstance.getDifficulty()) {
+            button.classList.add("button-active")
+        }
+    })
+
+})
+
+document.querySelectorAll('#button-diff').forEach(button => button.addEventListener('click', (e) => {
+    // gameManagerInstance.newGame(e.currentTarget.dataset.difficulty)
+    document.querySelectorAll('#button-diff').forEach(button => button.classList.remove("button-active"))
+    e.currentTarget.classList.add("button-active")
+}))
 
 document.querySelector('#button-final').addEventListener('click', (e) => {
     
@@ -51,8 +84,6 @@ window.onload = () => {
     document.querySelector('body').onkeydown = (e) => {
 
         const key = parseInt(e.key);
-
-        // console.log(`CURRENT ${gameManagerInstance.newGame()}`);
         
         if (e.key === 'Backspace') 
         {
@@ -74,8 +105,6 @@ window.onload = () => {
                 gameManagerInstance.noteCell(parseInt(e.key))
             }
         }
-
-        // localStorage.setItem('grid', JSON.stringify(grid));
     }
 }
 
@@ -98,6 +127,13 @@ function renderPage() {
         document.querySelector(':root').style.setProperty('--text-sudoku-info-color',       'var(--text-sudoku-info-color-light)');
         document.querySelector(':root').style.setProperty('--sodoku-cell-disabled-fill',    'var(--sodoku-cell-disabled-fill-light)');
     }
+
+    document.querySelectorAll('#button-diff').forEach(button => {
+        button.classList.remove("button-active")
+        if (button.dataset.difficulty === gameManagerInstance.getDifficulty()) {
+            button.classList.add("button-active")
+        }
+    })
 
 }
 renderPage();

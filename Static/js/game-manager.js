@@ -27,7 +27,7 @@ class GameManager {
         if (this.loadState()) {
             this.gameState = this.loadState()
         } else {
-            this.newGame()
+            this.newGame(DIFFICULTIES.Easy.Name)
         }
         this.generateSudokuElements();
         this.renderGrid();
@@ -283,7 +283,6 @@ class GameManager {
     }
 
     resetDifficulty() {
-        this.gameState.Difficulty = DIFFICULTIES.Easy;
         this.setDifficulty();
         this.saveState();
     }
@@ -291,6 +290,10 @@ class GameManager {
     setDifficulty() {
         document.getElementById('difficulty').innerHTML = this.gameState.Difficulty.Name
         document.getElementById('icon').className = this.gameState.Difficulty.Icon
+    }
+
+    getDifficulty() {
+        return this.gameState.Difficulty.Name
     }
 
     resetHealthPoints() {
@@ -460,13 +463,15 @@ class GameManager {
         if (this.isAlive() && answers.includes(number) && positions.includes(this.currentPos.col) && positions.includes(this.currentPos.row)) {
 
             document.querySelectorAll('.sudoku-cell')[this.currentPos.row * 9 + this.currentPos.col].classList.remove('active')
+            document.querySelector('.bxs-heart').classList.remove('health-decrease')
 
             if (this.unique(number, this.currentPos.row, this.currentPos.col)) {
                 document.querySelectorAll('.sudoku-cell')[this.currentPos.row * 9 + this.currentPos.col].classList.add('correct')
             }
             else {
                 document.querySelectorAll('.sudoku-cell')[this.currentPos.row * 9 + this.currentPos.col].classList.add('incorrect')
-                // this.decreaseHealthPoints();
+                document.querySelector('.bxs-heart').classList.add('health-decrease')
+                this.decreaseHealthPoints();
             }
             this.gameState.Grid[this.currentPos.row][this.currentPos.col].givenValue = this.gameState.Grid[this.currentPos.row][this.currentPos.col].correctValue;
         }
@@ -524,7 +529,24 @@ class GameManager {
         this.renderCell()
     }
 
-    newGame() {
+    newGame(difficulty) {
+        switch (difficulty) {
+            case DIFFICULTIES.Easy.Name:
+                this.gameState.Difficulty = DIFFICULTIES.Easy;
+                break;
+            case DIFFICULTIES.Medium.Name:
+                this.gameState.Difficulty = DIFFICULTIES.Medium;
+                break;
+            case DIFFICULTIES.Hard.Name:
+                this.gameState.Difficulty = DIFFICULTIES.Hard;
+                break;
+            case DIFFICULTIES.Insane.Name:
+                this.gameState.Difficulty = DIFFICULTIES.Insane;
+                break;
+            default:
+                break;
+        }
+
         this.resetDifficulty();
         this.resetHealthPoints();
         this.resetHints();
@@ -544,46 +566,3 @@ if (JSON.parse(storedGameManager)?.length === 0) {
     gameManagerInstance = Object.freeze(new GameManager());
     window.localStorage.setItem('gameManager', JSON.stringify(gameManagerInstance));
 }
-
-// gameManagerInstance.newGame();
-console.log(gameManagerInstance);
-
-
-
-
-
-// const boxRow = Math.floor(row / 3);
-// const boxCol = Math.floor(col / 3);
-
-// const minY = boxRow * 3;
-// const maxY = minY + 3;
-
-// const minX = boxCol * 3;
-// const maxX = minX + 3;
-
-// let cellsToHighlight = []
-// for (let i = col; i < 100; i = i + 9) {
-//     cellsToHighlight.push(i)
-// }
-// for (let i = Math.floor(col / 9) + (9 * row); i < (9 * row) + 9; i++) {
-//     cellsToHighlight.push(i)
-// }
-
-// let cells = document.querySelectorAll('.sudoku-cell');
-// for (let index = 0; index < cells.length; index++) {
-//     const element = cells[index];
-
-//     const targetCol = index % 9;
-//     const targetRow = Math.floor( index / 9 );
-    
-//     element.classList.remove('highlight');
-//     if (targetRow < maxY && targetRow >= minY) {
-//         if (targetCol < maxX && targetCol >= minX) {
-//             element.classList.add('highlight');
-//         }
-//     }
-
-//     if (cellsToHighlight.includes(index)) {
-//         element.classList.add('highlight');
-//     }
-// }

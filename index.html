@@ -30,30 +30,54 @@
         </div>
     </nav>
     <main>
-        <div class="sudoku-container">
-            <div id="sudoku-field"></div>
-            <div id="sudoku-options">
-                <div id="button-hint">
-                    <i class='bx bxs-bulb'></i>
-                    <span id="hints">3</span>
+        <div class="menu" id="menu">
+            <div id="button-menu-continue">
+                Continue
+            </div>
+            <div id="button-menu-play">
+                New Game
+            </div>
+            <div class="row-menu-difficulty">
+                <div id="button-diff" class="button-active" data-difficulty="Easy">
+                    <i class='bx bxs-laugh easy'></i>
                 </div>
-                <div id="button-final">
-                    <i class='bx bxs-pen'></i>
+                <div id="button-diff" data-difficulty="Medium">
+                    <i class='bx bxs-confused medium'></i>
                 </div>
-                <div id="button-note">
-                    <i class='bx bxs-pencil'></i>
+                <div id="button-diff" data-difficulty="Hard">
+                    <i class='bx bxs-sad hard'></i>
                 </div>
-                <div id="button-restart">
-                    <i class='bx bxs-exit restart'></i>
+                <div id="button-diff" data-difficulty="Insane">
+                    <i class='bx bxs-dizzy insane'></i>
                 </div>
             </div>
-            <div id="sudoku-info">
-                <i class='bx bxs-heart'></i>
-                <span id="healthpoints">3</span>
-                <i class='bx bxs-time'></i>
-                <span id="time-elapsed">00:00</span>
-                <i class='bx bxs-laugh easy' id="icon"></i>
-                <span id="difficulty">Easy</span>
+        </div>
+        <div id="game" class="down">
+            <div class="sudoku-container">
+                <div id="sudoku-field"></div>
+                <div id="sudoku-options">
+                    <div id="button-hint">
+                        <i class='bx bxs-bulb'></i>
+                        <span id="hints">3</span>
+                    </div>
+                    <div id="button-final">
+                        <i class='bx bxs-pen'></i>
+                    </div>
+                    <div id="button-note">
+                        <i class='bx bxs-pencil'></i>
+                    </div>
+                    <div id="button-restart">
+                        <i class='bx bxs-exit restart'></i>
+                    </div>
+                </div>
+                <div id="sudoku-info">
+                    <i class='bx bxs-heart'></i>
+                    <span id="healthpoints">3</span>
+                    <i class='bx bxs-time'></i>
+                    <span id="time-elapsed">00:00</span>
+                    <i class='bx bxs-laugh easy' id="icon"></i>
+                    <span id="difficulty">Easy</span>
+                </div>
             </div>
         </div>
     </main>
