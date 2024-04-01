@@ -3,10 +3,6 @@ THEME = {
     LIGHT: 'light'
 }
 
-if (localStorage.getItem('difficulty') === null) {
-    localStorage.setItem('difficulty', DIFFICULTIES.Easy);
-};
-
 if (localStorage.getItem('theme') === null) {
     localStorage.setItem('theme', THEME.DARK);
 };
