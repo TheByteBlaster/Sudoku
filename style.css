@@ -19,11 +19,11 @@
 
     --text-sudoku-cell-color: var(--text-sudoku-cell-color-dark);
     --text-sudoku-cell-color-dark: #8F8F8F;
-    --text-sudoku-cell-color-light: #666646;
+    --text-sudoku-cell-color-light: #666656;
 
     --text-sudoku-info-color: var(--text-sudoku-info-color-dark);
     --text-sudoku-info-color-dark: #9F9F9F;
-    --text-sudoku-info-color-light: #464626;
+    --text-sudoku-info-color-light: #666656;
 
     --bg-nav: var(--bg-nav-dark);
     --bg-nav-dark: #1F1F1F;
@@ -398,6 +398,40 @@ main {
 } */
 
 /* ------------------------------ */
+/*         BANNER                 */
+/* ------------------------------ */
+
+.banner-won {
+    position: absolute;
+    width: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8FAE4D;
+    padding: 2rem;
+    font-size: xx-large;
+    transform: rotate(-2deg);
+    animation: banner-movement 2s infinite ease-in-out alternate-reverse;
+    color: white;
+    font-weight: bolder;
+}
+
+.banner-lost {
+    position: absolute;
+    width: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fb6060;
+    padding: 2rem;
+    font-size: xx-large;
+    transform: rotate(-2deg);
+    animation: banner-movement 2s infinite ease-in-out alternate-reverse;
+    color: white;
+    font-weight: bolder;
+}
+
+/* ------------------------------ */
 /*         ANIMATIONS             */
 /* ------------------------------ */
 
@@ -471,6 +505,26 @@ main {
     100% {
         background-color: var(--bg-sudoku-cell);
         color: #111111;
+    }
+
+}
+
+@keyframes banner-movement {
+    
+    0% {
+        transform: rotate(2deg);
+        scale: 1.1;
+        
+    }
+
+    50% {
+        transform: rotate(0deg);
+        scale: 1;
+    }
+
+    100% {
+        transform: rotate(-2deg);
+        scale: 1.1;
     }
 
 }

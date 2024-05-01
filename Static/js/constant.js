@@ -1,6 +1,7 @@
 const EASY = {
     Name: 'Easy',
-    RevealedNumbers: 50,
+    // RevealedNumbers: 50,
+    RevealedNumbers: 80,
     HealthPoints: 5,
     Hints: 5,
     Icon: 'bx bxs-laugh'

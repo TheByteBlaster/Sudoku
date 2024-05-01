@@ -26,7 +26,7 @@ class GameManager {
 
 
         if (this.loadState()) {
-            this.gameState = this.loadState()
+            this.gameState = this.loadState().gameState
         } else {
             this.newGame(DIFFICULTIES.Easy.Name)
         }
@@ -46,11 +46,11 @@ class GameManager {
     }
 
     saveState() {
-        window.localStorage.setItem('gameState', JSON.stringify(this.gameState));
+        window.localStorage.setItem('gameManager', JSON.stringify(this));
     }
 
     loadState() {
-        return JSON.parse(window.localStorage.getItem('gameState'))
+        return JSON.parse(window.localStorage.getItem('gameManager'))
     }
 
     generateGrid() {
@@ -242,10 +242,9 @@ class GameManager {
         let revealedNumbers = this.gameState.Difficulty.RevealedNumbers;
 
         for (let i = 0; i < revealedNumbers; i++) {
-            let row = Math.floor(Math.random() * 9);
-            let col = Math.floor(Math.random() * 9);
-            this.gameState.Grid[row][col].enabled = false;
-            this.gameState.Grid[row][col].givenValue = this.gameState.Grid[row][col].correctValue;
+            this.getRandomEmptyPosition(this.currentPos)
+            this.gameState.Grid[this.currentPos.row][this.currentPos.col].enabled = false;
+            this.gameState.Grid[this.currentPos.row][this.currentPos.col].givenValue = this.gameState.Grid[this.currentPos.row][this.currentPos.col].correctValue;
         }
         
         this.saveState();
@@ -362,17 +361,25 @@ class GameManager {
     }
 
     isAlive() {
-        return this.gameState.HealthPoints > 0;
+        return this.gameState.HealthPoints > 0
     }
 
     decreaseHealthPoints() {
+
+        if (this.gameState.HealthPoints == 1) {
+            document.getElementById("banner").classList = ["banner-lost"]
+            document.getElementById("banner").innerHTML = "GAME OVER"
+    
+            this.gameState.State = GAME_STATE.Lost
+            this.saveState()
+        }
 
         if (this.gameState.HealthPoints > 0) {
             this.gameState.HealthPoints--;
             this.saveState();
             document.getElementById('healthpoints').innerHTML = this.gameState.HealthPoints
             return true;
-        } 
+        }
 
         // Game is lost
         return false;
@@ -451,12 +458,6 @@ class GameManager {
         if (this.currentPos.col >= 0 && this.currentPos.row >= 0) {
             this.gameState.Grid[this.currentPos.row][this.currentPos.col].notes = []
         }
-        // const cells = document.querySelectorAll('.sudoku-cell');
-        // const currentCellIndex = this.currentPos.row * 9 + this.currentPos.col;
-        // console.log(currentCellIndex);
-        // if (currentCellIndex >= 0) {
-        //     cells[currentCellIndex].querySelectorAll('.sudoku-cell-hint');
-        // }
         this.renderCell()
     }
 
@@ -481,6 +482,8 @@ class GameManager {
                 this.decreaseHealthPoints();
             }
             this.gameState.Grid[this.currentPos.row][this.currentPos.col].givenValue = this.gameState.Grid[this.currentPos.row][this.currentPos.col].correctValue;
+
+            this.isDone()
         }
         else {
             return false
@@ -532,17 +535,46 @@ class GameManager {
         document.querySelectorAll('.sudoku-cell')[index].classList.add('hint')
 
         this.gameState.Grid[this.currentPos.row][this.currentPos.col].givenValue = this.gameState.Grid[this.currentPos.row][this.currentPos.col].correctValue
+        this.isDone()
         this.saveState()
         this.renderCell()
     }
 
+    isDone() {
+        let grid = this.gameState.Grid;
+
+        for (let y = 0; y < 9; y++) {
+            for (let x = 0; x < 9; x++) {
+                if (grid[y][x].givenValue === null) return false;
+            }
+        }
+
+        console.log("WINNER");
+        document.getElementById("banner").classList = ["banner-won"]
+        document.getElementById("banner").innerHTML = "WINNER"
+
+        this.gameState.State = GAME_STATE.None
+        this.saveState()
+        return true;
+    }
+
     play() {
-        this.gameState.State = GAME_STATE.Ongoing
+        if (this.isAlive()) {
+            this.gameState.State = GAME_STATE.Ongoing
+        } else {
+            this.gameState.State = GAME_STATE.Lost
+        }
         this.saveState()
     }
 
     pause() {
-        this.gameState.State = GAME_STATE.Paused
+        if (!this.isAlive() | this.isDone()) {
+            this.gameState.State = GAME_STATE.None
+        } else {
+            this.gameState.State = GAME_STATE.Paused
+        }
+        document.getElementById("banner").classList = []
+        document.getElementById("banner").innerHTML = ""
         this.saveState()
     }
 
@@ -574,7 +606,6 @@ class GameManager {
         this.generateGrid();
         this.generateSudokuElements();
         this.resetTime();
-        this.play()
     }
     
 }

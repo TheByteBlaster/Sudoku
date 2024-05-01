@@ -59,13 +59,6 @@ document.querySelector('#button-menu-continue').addEventListener('click', (e) =>
     document.getElementById('game').classList.remove("down")
     gameManagerInstance.play()
 
-    document.querySelectorAll('#button-diff').forEach(button => {
-        button.classList.remove("button-active")
-        if (button.dataset.difficulty === gameManagerInstance.getDifficulty()) {
-            button.classList.add("button-active")
-        }
-    })
-
 })
 
 document.querySelectorAll('#button-diff').forEach(button => button.addEventListener('click', (e) => {
@@ -88,6 +81,7 @@ document.querySelector('#button-note').addEventListener('click', (e) => {
 })
 
 window.onload = () => {
+    
     document.querySelector('body').onkeydown = (e) => {
 
         const key = parseInt(e.key);
@@ -140,7 +134,7 @@ function renderPage() {
 
     document.querySelectorAll('#button-diff').forEach(button => {
         button.classList.remove("button-active")
-        if (button.dataset.difficulty === gameManagerInstance.getDifficulty()) {
+        if (button.dataset.difficulty === localStorage.getItem('difficulty')) {
             button.classList.add("button-active")
         }
     })
@@ -152,5 +146,10 @@ function renderPage() {
         document.getElementById('button-menu-continue').style.display = 'none'
     }
 
+}
+if (gameManagerInstance.getState() === GAME_STATE.None) {
+    console.log("NEW");
+} else {
+    gameManagerInstance.pause()
 }
 renderPage();
