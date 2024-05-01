@@ -463,6 +463,10 @@ class GameManager {
 
     answerCell(number) {
 
+        if (this.currentPos.row == -1 | this.currentPos.col == -1) {
+            return
+        }
+
         this.clearSudokuCellNotes()
 
         const answers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -494,6 +498,10 @@ class GameManager {
     }
 
     noteCell(number) {
+
+        if (this.currentPos.row == -1 | this.currentPos.col == -1) {
+            return
+        }
 
         const answers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
