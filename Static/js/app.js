@@ -3,6 +3,10 @@ THEME = {
     LIGHT: 'light'
 }
 
+if (localStorage.getItem('difficulty') === null) {
+    localStorage.setItem('difficulty', DIFFICULTIES.Easy.Name);
+};
+
 if (localStorage.getItem('theme') === null) {
     localStorage.setItem('theme', THEME.DARK);
 };
@@ -29,10 +33,12 @@ document.querySelector('#button-hint').addEventListener('click', (e) => {
 
 })
 
-document.querySelector('#button-restart').addEventListener('click', (e) => {
+document.querySelector('#button-pause').addEventListener('click', (e) => {
     
     document.getElementById('menu').classList.remove("up")
     document.getElementById('game').classList.add("down")
+    gameManagerInstance.pause()
+    renderPage()
 
 })
 
@@ -40,7 +46,10 @@ document.querySelector('#button-menu-play').addEventListener('click', (e) => {
     
     document.getElementById('menu').classList.add("up")
     document.getElementById('game').classList.remove("down")
-    gameManagerInstance.newGame(gameManagerInstance.getDifficulty())
+
+    let difficulty = localStorage.getItem("difficulty")
+    gameManagerInstance.newGame(difficulty)
+    gameManagerInstance.play()
 
 })
 
@@ -48,6 +57,7 @@ document.querySelector('#button-menu-continue').addEventListener('click', (e) =>
     
     document.getElementById('menu').classList.add("up")
     document.getElementById('game').classList.remove("down")
+    gameManagerInstance.play()
 
     document.querySelectorAll('#button-diff').forEach(button => {
         button.classList.remove("button-active")
@@ -62,6 +72,7 @@ document.querySelectorAll('#button-diff').forEach(button => button.addEventListe
     // gameManagerInstance.newGame(e.currentTarget.dataset.difficulty)
     document.querySelectorAll('#button-diff').forEach(button => button.classList.remove("button-active"))
     e.currentTarget.classList.add("button-active")
+    localStorage.setItem("difficulty", e.currentTarget.dataset.difficulty)
 }))
 
 document.querySelector('#button-final').addEventListener('click', (e) => {
@@ -85,6 +96,9 @@ window.onload = () => {
         {
             gameManagerInstance.clearSudokuCellNotes();
             return;
+        }
+        else if (e.key === 'h') {
+            gameManagerInstance.useHint()
         }
         else if (e.key === ' ') {
             if (gameManagerInstance.getInputMode() === INPUT_MODE.Final) {
@@ -130,6 +144,13 @@ function renderPage() {
             button.classList.add("button-active")
         }
     })
+
+    if (gameManagerInstance.getState() === GAME_STATE.Paused) {
+        document.getElementById('button-menu-continue').style.display = 'flex'
+        document.getElementById('button-menu-continue').innerHTML = 'Continue'
+    } else {
+        document.getElementById('button-menu-continue').style.display = 'none'
+    }
 
 }
 renderPage();

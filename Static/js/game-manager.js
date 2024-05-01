@@ -13,7 +13,8 @@ class GameManager {
         Hints: null,
         Grid: null,
         InputMode: null,
-        Time: 0
+        Time: 0,
+        State: GAME_STATE.None
     }
 
     constructor() {
@@ -31,7 +32,7 @@ class GameManager {
         }
         this.generateSudokuElements();
         this.renderGrid();
-        this.setDifficulty();
+        this.renderDifficulty();
         this.setHealthPoints();
         this.setHints();
         this.renderTimer();
@@ -283,11 +284,11 @@ class GameManager {
     }
 
     resetDifficulty() {
-        this.setDifficulty();
+        this.renderDifficulty();
         this.saveState();
     }
 
-    setDifficulty() {
+    renderDifficulty() {
         document.getElementById('difficulty').innerHTML = this.gameState.Difficulty.Name
         document.getElementById('icon').className = this.gameState.Difficulty.Icon
     }
@@ -324,7 +325,7 @@ class GameManager {
     }
 
     setInputModeNote() {
-        this.gameState.InputMode = INPUT_MODE.note;
+        this.gameState.InputMode = INPUT_MODE.Note;
         document.getElementById('button-note').classList.add("button-active")
         document.getElementById('button-final').classList.remove("button-active")
         this.saveState();
@@ -341,10 +342,16 @@ class GameManager {
     }
 
     incrementTimer() {
-        let totalSeconds = this.gameState.Time + 1
-        this.gameState.Time = totalSeconds
+        if (this.gameState.State === GAME_STATE.Ongoing) {
+            let totalSeconds = this.gameState.Time + 1
+            this.gameState.Time = totalSeconds
+        }
         this.renderTimer();
         this.saveState();
+    }
+
+    getTime() {
+        return this.gameState.Time
     }
 
     renderTimer() {
@@ -529,6 +536,20 @@ class GameManager {
         this.renderCell()
     }
 
+    play() {
+        this.gameState.State = GAME_STATE.Ongoing
+        this.saveState()
+    }
+
+    pause() {
+        this.gameState.State = GAME_STATE.Paused
+        this.saveState()
+    }
+
+    getState() {
+        return this.gameState.State
+    }
+
     newGame(difficulty) {
         switch (difficulty) {
             case DIFFICULTIES.Easy.Name:
@@ -553,6 +574,7 @@ class GameManager {
         this.generateGrid();
         this.generateSudokuElements();
         this.resetTime();
+        this.play()
     }
     
 }

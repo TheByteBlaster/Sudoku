@@ -41,3 +41,10 @@ const INPUT_MODE = {
     Note: 'note',
     Final: 'final'
 }
+
+const GAME_STATE = {
+    Ongoing: 'ongoing',
+    Paused: 'paused',
+    None: 'none',
+    Lost: 'lost'
+}
