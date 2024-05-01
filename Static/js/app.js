@@ -140,10 +140,12 @@ function renderPage() {
     })
 
     if (gameManagerInstance.getState() === GAME_STATE.Paused) {
+        document.getElementById('divider').style.display = 'block'
         document.getElementById('button-menu-continue').style.display = 'flex'
         document.getElementById('button-menu-continue').innerHTML = 'Continue'
     } else {
         document.getElementById('button-menu-continue').style.display = 'none'
+        document.getElementById('divider').style.display = 'none'
     }
 
 }
